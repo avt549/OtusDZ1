@@ -10,8 +10,5 @@
         <module name="OtusDZ1" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="OtusDZ1" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>

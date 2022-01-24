@@ -1,27 +1,16 @@
 package com.example.otusdz1;
 
-import com.codeborne.selenide.*;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import static com.codeborne.selenide.Browsers.FIREFOX;
-import static org.testng.Assert.*;
-
-import static com.codeborne.selenide.Condition.attribute;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPageTest {
-    MainPage mainPage = new MainPage();
-//public String url = "https://otus.ru";
-public String url = "https://otus.ru/categories/programming/";
 
+    public WebDriver driver;
+    MainPage mainPage = new MainPage();
+public String url = "https://otus.ru/categories/programming/";
 
     @BeforeClass
     public static void setUpAll() {
@@ -30,65 +19,69 @@ public String url = "https://otus.ru/categories/programming/";
     }
 
     @BeforeMethod
-    public void setUp() {
-        open(url);
+    public void setUp() {open(url);
     }
 
+    /**
+     * Проверка задания-
+     * "Реализовать Метод фильтр по названию курса" - позитивный кейс
+     */
     @Test
-    public void search1() {
+    public void searchByName() {
         System.out.println(mainPage.searchByName("Специализация").getText());
+    }
+
+    /**
+     * Проверка задания-
+     * "Реализовать Метод фильтр по названию курса" - негативный кейс
+     */
+    @Test
+    public void searchByNameNotFound() {
         System.out.println(mainPage.searchByName("QA").getText());
     }
+
+
+    /**
+     * Проверка задания-
+     * "Метод выбора курса, стартующего раньше всех
+     * /позже всех (при совпадении дат - выбрать любой) при помощи reduce"
+     */
     @Test
-    public void search2() {
-        SimpleDateFormat date = new SimpleDateFormat("dd MMMM",new Locale("ru"));
+    public void testReturnFirstCourseAndLastCourse() {
+        mainPage.printDateOfStartCourses();
+        System.out.println("-------------------------------");
+        System.out.println(mainPage.firstCourse().getText());
+        System.out.println("-------------------------------");
+        System.out.println(mainPage.lastCourse().getText());
+    }
 
-        ElementsCollection elCurses = $$x("//div[@class='lessons__new-item-container']");
-
-         SelenideElement maxCurs= elCurses.filter(Condition.not(Condition.text("О дате старта будет")))
-                 .filter(Condition.not(Condition.text("10 000 ₽")))
-                 .filter(Condition.not(Condition.text("В "))).
-//                 forEach((value)-> {
-//                     value.$x(".//div[@class='lessons__new-item-start']").getText().substring(2)
-//                 }
-//                 )
-                 stream().reduce((a,b)->
-                 {
-                     try {
-                         return  date.parse(a.getText()).after(date.parse(b.getText())) ? b:a;
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                     return null;
-                 }).get();
-
-                 elCurses.filter(Condition.not(Condition.text("В ")))
-                 .forEach((value)->{
-                     try {
-                         date.parse(    value.$x(".//div[@class='lessons__new-item-start']").getText().substring(2));
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                 });
+    /**
+     * Проверка задания-
+     * "Реализовать движение мыши при помощи и выбор курса при помощи библиотеки Actions"
+     */
+    @Test ()
+    public void testMoveTo() {
+        mainPage
+                .moveToElement(mainPage.coursesMenuItem)
+                .moveToElement(mainPage.coursesMenuItem)
+                .moveToElement(mainPage.testingSubmenuItem)
+                .moveToElement(mainPage.dropDownTrigger)
+                .moveToElementAndClickOnCourse(mainPage.pythonCourseMenuElement.get(0));
     }
 
 
-
-
+    /**
+     * Проверка задания-
+     * " Реализовать подсветку элементов перед нажатием,
+     * после нажатия вернуть данные в исходное состояние"
+     */
     @Test
-    public void search3() {
-        SimpleDateFormat date = new SimpleDateFormat("dd MMMM",new Locale("ru"));
-        ElementsCollection elCurses = $$x("//div[@class='lessons__new-item-container']");
+    public void testPaintBeforeClick() {
+        mainPage.scrollToAndClock(mainPage.elements.get(0));
+        mainPage.scrollToAndClock(mainPage.elements.get(1));
+        mainPage.scrollToAndClock(mainPage.elements.get(2));
+        mainPage.scrollToAndClock(mainPage.elements.get(3));
+        mainPage.scrollToAndClock(mainPage.elements.get(4));
 
-                elCurses.filter(Condition.not(Condition.text("О дате старта будет")))
-                .filter(Condition.not(Condition.text("10 000 ₽")))
-                .filter(Condition.not(Condition.text("В ")))
-                .forEach((value)->{
-                    try {
-                        System.out.println(date.parse( value.$x(".//div[@class='lessons__new-item-start']").getText().substring(2)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                });
     }
 }
