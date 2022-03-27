@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Suite1" parallel="methods" thread-count="3">
+    <test name="Tests" parallel="methods" thread-count="3" verbose="2" preserve-order="false" >
+        <classes>
+            <class name="com.example.otusdz1.MainPageTest" >
+           </class>
+        </classes>
+    </test>
+</suite>

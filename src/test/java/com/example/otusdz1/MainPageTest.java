@@ -2,13 +2,11 @@ package com.example.otusdz1;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPageTest {
 
-    public WebDriver driver;
     MainPage mainPage = new MainPage();
 public String url = "https://otus.ru/categories/programming/";
 
@@ -30,16 +28,6 @@ public String url = "https://otus.ru/categories/programming/";
     public void searchByName() {
         System.out.println(mainPage.searchByName("Специализация").getText());
     }
-
-    /**
-     * Проверка задания-
-     * "Реализовать Метод фильтр по названию курса" - негативный кейс
-     */
-    @Test
-    public void searchByNameNotFound() {
-        System.out.println(mainPage.searchByName("QA").getText());
-    }
-
 
     /**
      * Проверка задания-

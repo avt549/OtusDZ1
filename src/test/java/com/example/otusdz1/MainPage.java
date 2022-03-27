@@ -4,38 +4,20 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
-import com.ibm.icu.text.RelativeDateTimeFormatter;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.security.Key;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.TimeZone;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
     public WebDriver driver;
-    public MainPage() {
-//        PageFactory.initElements(driver, this);
-    }
      public SelenideElement coursesMenuItem = $x(".//p[@class='header2-menu__item-text' and text()='Курсы']");
      public SelenideElement testingSubmenuItem = $x("//div[contains(@class, 'header2-menu__subdropdown-wrapper')]/a[contains(@href, '/categories/testing')]");
      public SelenideElement dropDownTrigger = $x("//a[contains(@title, 'Тестирование')]/div[contains(@class, 'js-menu-subdropdown-trigger')]");
@@ -46,6 +28,7 @@ public class MainPage {
 
 
     public SelenideElement searchByName(String searchValue) {
+        elCurses.get(elCurses.size()-1).scrollIntoView(true);
         ElementsCollection elements = elCurses.filter(Condition.text(searchValue));
         Assert.assertTrue(
                 elements.size()>0,
@@ -57,10 +40,10 @@ public class MainPage {
 
 public SelenideElement firstCourse()  {
     SimpleDateFormat date = new SimpleDateFormat("dd MMMM",new Locale("ru"));
-//    ElementsCollection elCurses = $$x("//div[@class='lessons__new-item-container']");
     SelenideElement maxCurs = elCurses
             .filter(Condition.not(Condition.text("О дате старта будет")))
             .filter(Condition.not(Condition.text("10 000 ₽")))
+            .filter(Condition.not(Condition.text("10 ₽")))
             .filter(Condition.not(Condition.text("В марте")))
             .filter(Condition.not(Condition.text("В мае")))
             .filter(Condition.not(Condition.text("В апреле")))
@@ -92,6 +75,7 @@ public SelenideElement firstCourse()  {
         SelenideElement maxCurs = elCurses
                 .filter(Condition.not(Condition.text("О дате старта будет")))
                 .filter(Condition.not(Condition.text("10 000 ₽")))
+                .filter(Condition.not(Condition.text("10 ₽")))
                 .filter(Condition.not(Condition.text("В марте")))
                 .filter(Condition.not(Condition.text("В мае")))
                 .filter(Condition.not(Condition.text("В апреле")))
@@ -125,6 +109,7 @@ public SelenideElement firstCourse()  {
 
             elCurses.filter(Condition.not(Condition.text("О дате старта будет")))
                     .filter(Condition.not(Condition.text("10 000 ₽")))
+                    .filter(Condition.not(Condition.text("10 ₽")))
                     .filter(Condition.not(Condition.text("В марте")))
                     .filter(Condition.not(Condition.text("В мае")))
                     .filter(Condition.not(Condition.text("В апреле")))
